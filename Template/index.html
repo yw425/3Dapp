@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type='text/javascript' src='https://www.x3dom.org/download/x3dom.js'> </script>
+    <link rel='stylesheet' type='text/css' href='https://www.x3dom.org/download/x3dom.css'/>
+    <link rel='stylesheet' type='text/css' href='css/bootstrap.min.css'/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <title>work</title>
+</head>
+<style>
+    body{
+        background-image: linear-gradient(147.04563238526578deg, rgba(255, 0, 0,1) 0.9755463059313172%,rgba(1, 0, 0,1) 76.41779396462019%,rgba(0, 0, 0,1) 76.41779396462019%);
+        background-repeat-y: no-repeat;
+    }
+
+    button:active{
+        outline: 0;
+    }
+
+    .left_btn{
+        position: absolute;
+        top: 50%;
+        left: 10px;
+    }
+    .right_btn{
+        position: absolute;
+        top: 50%;
+        right: 10px;
+    }
+    .btnGroup{
+        position: absolute;
+        top: 10px;
+        right: 0;
+        display: flex;
+        flex-wrap: wrap;
+        width: 340px;
+        justify-content: flex-end;
+    }
+
+    .btnGroup > .btn{
+        border-radius: 50%;
+        margin: 0 10px;
+        
+    }
+
+    .btnGroup > .btn-img{
+        padding: 6px 10px;
+    }
+
+    .logo{
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+
+    #collapseExample{
+        margin: 10px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+</style>
+<body>
+<!-- Modal -->
+    <x3d id='x3dElement' style='width:100%; border:0; position: absolute;' disableKeys="true">
+        <scene>
+            <NavigationInfo id="head" headlight='TRUE' type='"EXAMINE"'></NavigationInfo> 
+
+            <Viewpoint id="front" position="-0.22460 0.28731 -6.09604" orientation="-0.01452 0.99989 0.00149 3.15829"  description="camera"></Viewpoint>
+            <Viewpoint id="left" position="6.08994 0.45150 -0.05901" orientation="-0.02036 0.99975 0.00905 1.56125"    description="camera"></Viewpoint>
+            <Viewpoint id="top" position="0.81116 6.05283 -0.00139" orientation="0.08584 0.71843 0.69028 3.10161"   description="camera"></Viewpoint>
+            <PointLight id="point" position='5 1 1' color='0 0.6 0.0' on ="TRUE" intensity='12.0' shadowIntensity='0.0'> </PointLight>
+            <group  id="group" position='0 0 0'>
+                <switch whichchoice="0" id="model_selector">
+                    <transform onclick="SwitchAnimation(1)" DEF='anima1'>
+                        <inline nameSpaceName="Model" mapDEFToID="true" url="http://localhost/SQL/?id=1.x3d""></inline>
+                    </transform>
+                    <transform onclick="SwitchAnimation(2)" DEF='anima2'>
+                        <inline nameSpaceName="Model" mapDEFToID="true" url="http://localhost/SQL/?id=2.x3d"></inline>
+                    </transform>
+                    <transform onclick="SwitchAnimation(3)" DEF='anima3'>
+                        <inline nameSpaceName="Model" mapDEFToID="true" url="http://localhost/SQL/?id=3.x3d""></inline>
+                    </transform>
+                </switch>
+
+            </group>
+
+            <timeSensor id="anima_timer" DEF='clock' cycleInterval='8' loop='true' enabled="false"></timeSensor>
+            <orientationInterpolator DEF='spinThings' key='0 0.25 0.5 0.75 1' keyValue='0 1 0 0  0 1 0 1.57079  0 1 0 3.14159  0 1 0 4.71239  0 1 0 6.28317'></orientationInterpolator>
+         
+            <route fromNode='clock' fromField='fraction_changed' toNode='spinThings' toField='set_fraction'></route>
+            <route fromNode='spinThings' fromField='value_changed' id="tonode" toNode='anima1' toField='set_rotation'></route>
+            <route fromNode='spinThings' fromField='value_changed' id="tonode" toNode='anima2' toField='set_rotation'></route>
+            <route fromNode='spinThings' fromField='value_changed' id="tonode" toNode='anima3' toField='set_rotation'></route>
+
+        </scene> 
+    </x3d>
+
+
+    <embed height="100px" class="logo" src="./img/logo.svg" alt="" srcset=""/>
+    <div class="btnGroup">
+        <button onclick="change_viewport('T')" type="button" class="btn">T</button>
+        <button onclick="change_viewport('F')" type="button" class="btn">F</button>
+        <button onclick="change_viewport('L')" type="button" class="btn">L</button>
+        <button onclick="change_wireframe()" type="button" class="btn btn-img"><img id="line_img" width="12px" src="./img/box-l.svg" alt="" srcset=""></button>
+        <button onclick="switch_light()" type="button" class="btn btn-img"><img id="light_img" width="12px" src="img/light.svg" alt="" srcset=""></button>
+        <button style="padding: 6px 14px;" class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            i
+        </button>
+        <div class="bg-primary collapse" id="collapseExample">
+            <div class="card card-body">
+                <p id="info"></p>
+            </div>
+        </div>
+    </div>
+    <button onclick="up_item()" type="button" class="btn btn-danger left_btn"><img width="80px" src="img/left-arrow.svg" alt="" srcset=""></button>
+    <button onclick="down_item()" type="button" class="btn btn-danger right_btn"><img width="80px" src="img/right-arrow.svg" alt="" srcset=""></button>
+
+    <script src="js/index.js"></script>
+    <script>
+        $.post('index.php', {'action': 'get_info'}, function(data){
+            data = JSON.parse(data);
+            $('#info').html(data.info);
+        });
+    </script>
+</body>
+</html>
