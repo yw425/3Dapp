@@ -8,9 +8,9 @@
 		return;
 	}
 	if($_POST){
-		$json = '{"info":"3DApp build by X3Dom"}';
+		$json = '{"info":"3DApp build by X3Dom.This web page was originally created by Yixiang Wang and is only used as a display for Web 3D Applications assignment. <br/>Github: <a href=\"https://github.com/yw425/3Dapp\" style=\"color:#00c4ff;\" class=\"btn btn-link\">https://github.com/yw425/3Dapp</a>"}';
 		echo $json;
-		return;
+		return; 
 	}
 	else{
 		require('view.php');
